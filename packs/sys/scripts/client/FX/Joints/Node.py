@@ -1,0 +1,73 @@
+# Embedded file name: ./scripts/client/FX/Joints/Node.py
+from FX import s_sectionProcessors
+from FX import typeCheck
+from FX.Joint import Joint
+from bwdebug import *
+import BigWorld
+import traceback
+
+class Node(Joint):
+    """
+    This class implements a Joint that attaches an actor to a node.
+    
+    The actor may be any PyAttachment, for example a model or a
+    particle system.
+    """
+
+    def load(self, pSection, prereqs = None):
+        """
+        This method loads the Joint from a data section.  The node
+        name is read from the section name.
+        """
+        self.nodeName = pSection.asString
+        return self
+
+    def attach(self, actor, source, target = None):
+        if source is None:
+            return 0
+        elif actor.attached:
+            ERROR_MSG('actor is already attached!', actor, self.nodeName)
+            return 0
+        else:
+            parent_model = source
+            if hasattr(source, 'model'):
+                parent_model = source.model
+            try:
+                if self.nodeName == 'root':
+                    parent_model.root.attach(actor)
+                else:
+                    parent_model.node(self.nodeName).attach(actor)
+            except (AttributeError, ValueError):
+                print '/----attach'
+                print 'actor:', actor
+                print 'source:', source
+                print 'parent_model:', parent_model
+                print 'parent_model.sources:', getattr(parent_model, 'sources', 'no attr')
+                ERROR_MSG('No such node', self.nodeName)
+                traceback.print_exc()
+                print '----/'
+
+            return
+
+    def detach(self, actor, source, target = None):
+        if source is None:
+            return
+        elif not actor.attached:
+            ERROR_MSG('actor is not attached!', actor, self.nodeName)
+            return 0
+        else:
+            parent_model = source
+            if hasattr(source, 'model'):
+                parent_model = source.model
+            try:
+                if self.nodeName == 'root':
+                    parent_model.root.detach(actor)
+                else:
+                    parent_model.node(self.nodeName).detach(actor)
+            except (ValueError, AttributeError):
+                ERROR_MSG('No such node', self.nodeName)
+
+            return
+
+
+s_sectionProcessors['Node'] = Node
