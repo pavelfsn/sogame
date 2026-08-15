@@ -335,7 +335,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
                     if type_id not in existing_types:
                         self.spawn_new_item(type_id)
                         added_count += 1
-            print "Added %d new items to inventory." % added_count
+            print("Added %d new items to inventory." % added_count)
 
     def onDestroyModel(self):
         self.ClearWeaponLightsAttachments()
@@ -411,7 +411,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         try:
             self._updataBurn()
         except Exception as e:
-            print 'SetAvatarModel::_updataBurn error'
+            print('SetAvatarModel::_updataBurn error')
             traceback.print_exc()
 
         BigWorld.player().onAvatarModelChangedForPlayer(self)
@@ -478,7 +478,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         else:
             if equippedItemType == ItemsCatalog.NONE_TYPE:
                 return None
-            print '\t Wrong pitch state!'
+            print('\t Wrong pitch state!')
             raise Exception('Wrong pitch state!') or AssertionError
         if recoil:
             pitch_action_name += 'Recoil'
@@ -500,7 +500,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
                     pitch_frame = int(safe_pitch * frameCount) + pitch_action.firstFrame
                     pitch_action(0, None, 0, pitch_frame, pitch_frame)
         except Exception as e:
-            print 'Avatar::DoPitchAction():', str(e)
+            print('Avatar::DoPitchAction():', str(e))
 
         return
 
@@ -590,10 +590,10 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
                 with codecs.open('playersdata.json', 'w', 'utf-8') as f:
                     json.dump(playersdata, f, sort_keys=False, ensure_ascii=False, indent=4)
                 
-                print "Player data saved successfully (Python 2.6 mode)"
+                print("Player data saved successfully (Python 2.6 mode)")
                 
             except Exception:
-                print "Error during save character data!"
+                print("Error during save character data!")
                 traceback.print_exc()
 
         # Стандартная очистка ресурсов движка
@@ -835,7 +835,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         self.deadCallback = BigWorld.callback(1.2, __onDeathDrawn)
 
     def on_revive(self):
-        print 'on_revive'
+        print('on_revive')
         Victim.on_revive(self)
         AnimationCaps.setCap(self.model, 'Dead', False)
         self.model.Die.stop()
@@ -1007,7 +1007,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
             if reload_type == ItemsUtils.RELOAD_MANUAL_SHORT:
                 self.ManualReloadStart(time_to_reload, num_added_ammo, True)
                 return
-            print 'error weapon type:', ItemsUtils.GetEquippedItemType(self)
+            print('error weapon type:', ItemsUtils.GetEquippedItemType(self))
             return
         reload_framerate = get_action_frame_rate(reload_action, time_to_reload)
         self.StartSFXSeries(reload_framerate, frame_actions, frames)
@@ -1028,7 +1028,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         elif reload_type == ItemsUtils.RELOAD_MANUAL:
             reload_action = self.model.UnjammedAutogun
         else:
-            print 'error weapon type:', ItemsUtils.GetEquippedItemType(self)
+            print('error weapon type:', ItemsUtils.GetEquippedItemType(self))
         self.EnableModelPitch(False)
         execute_model_action(reload_action, action_time, self.UnJammWeaponEnded)
         SFXer.UnJammEffect(self)
@@ -1048,7 +1048,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         elif type == ItemsUtils.RELOAD_PISTOL:
             reload_action = self.model.JammPistol
         else:
-            print 'error weapon type:', ItemsUtils.GetEquippedItemType(self)
+            print('error weapon type:', ItemsUtils.GetEquippedItemType(self))
         self.EnableModelPitch(False)
         SFXer.JammEffect(self)
         execute_model_action(reload_action, action_time, self.InFormWeponJammedEnded)
@@ -1073,10 +1073,10 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         try:
             self.model.Jump()
         except:
-            print 'model no Jump'
+            print('model no Jump')
 
     def onGeometryMapped(self, spaceName):
-        print 'Avatar.onGeometryMapped: self.spaceID = ', self.spaceID
+        print('Avatar.onGeometryMapped: self.spaceID = ', self.spaceID)
 
     def systemMessage(self, msg, color):
         BWPersonality.gpd.sendMessageColored(msg, color)
@@ -1216,7 +1216,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
                     elif weapon_type in [ItemsCatalog.ROCKET_LAUNCHER, ItemsCatalog.GRENADE_LAUNCHER]:
                         equip_action = self.model.TakeInLauncher
                     else:
-                        print 'error item class:', equippedItemType
+                        print('error item class:', equippedItemType)
                     SFXer.WeaponEquipEffect(self)
                     execute_model_action(equip_action, equip_time, self.EquipAnimationEnd)
                     return
@@ -1418,10 +1418,10 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         self.filter = BigWorld.AvatarFilter()
 
     def ServerRestrict(self, channel, action_duration):
-        print 'This method must not work'
+        print('This method must not work')
 
     def InformExchangeTimer(self, num_seconds):
-        print 'This method must not work'
+        print('This method must not work')
 
     def debug_sendCreatureInfo(self, entityID, data):
         pass
@@ -1439,7 +1439,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         pass
 
     def askUseItemOnTarget(self, target_id, item_id):
-        print 'Avatar::askUseItemOnTarget'
+        print('Avatar::askUseItemOnTarget')
 
     def show_iwannadie_timer(self, is_showing):
         pass
@@ -1462,7 +1462,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         try:
             self._updataBurn()
         except Exception as e:
-            print 'Burn _updataBurn error', status
+            print('Burn _updataBurn error', status)
             traceback.print_exc()
 
     def Poison(self, status):
@@ -1569,16 +1569,16 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         pass
 
     def on_AllRoomData(self, data, listIDRooms):
-        print 'on_AllRoomData', dict(data), list(listIDRooms)
+        print('on_AllRoomData', dict(data), list(listIDRooms))
         self.tmp_romsdata = data
         self.tmp_listIDRooms = listIDRooms
 
     def on_roomData(self, data):
-        print 'on_roomData', dict(data)
+        print('on_roomData', dict(data))
         self.tmp_on_roomData = data
 
     def askChoiceTeam(self):
-        print 'askChoiceTeam'
+        print('askChoiceTeam')
 
     def set_teamID(self, old):
         print 'Avatar  (%s) set_teamID :' % self.id, old, '->', self.teamID
@@ -1588,7 +1588,7 @@ class Avatar(BigWorld.Entity, AvatarCommon, Victim, Damager, AvatarItemHolder, M
         BWPersonality.GUICore.healthBarGUI.component.NinjaIcon.visible = self.ninjaMode
 
     def roomEvent(self, eventID, code, msg):
-        print 'roomEvent', eventID, msg
+        print('roomEvent', eventID, msg)
 
     def onAvatarModelChangedForPlayer(self, *e):
         pass
